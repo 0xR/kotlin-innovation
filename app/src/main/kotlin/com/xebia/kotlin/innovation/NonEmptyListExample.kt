@@ -2,7 +2,6 @@ package com.xebia.kotlin.innovation
 
 import arrow.core.nonEmptyListOf
 import arrow.core.toNonEmptyListOrNull
-import kotlin.random.Random
 
 val nonEmptyList = nonEmptyListOf(1,2,3)
 val nonEmptyListFromList = listOf(4, 5).toNonEmptyListOrNull()
@@ -28,6 +27,7 @@ fun safeHeadCall() {
 }
 
 fun regularListOperations() {
+    println("With list: $nonEmptyList")
     val foldResult = nonEmptyList.foldLeft(0) { total, value -> total + value}
     println("Result of fold left: $foldResult")
 
