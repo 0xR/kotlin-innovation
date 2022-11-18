@@ -36,7 +36,7 @@ dependencies {
     implementation("io.arrow-kt:arrow-core")
     implementation("io.arrow-kt:arrow-optics")
     implementation("io.arrow-kt:arrow-fx-coroutines")
-    ksp("io.arrow-kt:arrow-optics-ksp-plugin")
+//    ksp("io.arrow-kt:arrow-optics-ksp-plugin")
 
 }
 
