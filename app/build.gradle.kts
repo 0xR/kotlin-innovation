@@ -33,7 +33,7 @@ dependencies {
     implementation("com.google.guava:guava:31.0.1-jre")
 
     implementation(platform("io.arrow-kt:arrow-stack:1.0.1"))
-    implementation("io.arrow-kt:arrow-core")
+    implementation("io.arrow-kt:arrow-core:1.1.3")
     implementation("io.arrow-kt:arrow-optics")
     implementation("io.arrow-kt:arrow-fx-coroutines")
 //    ksp("io.arrow-kt:arrow-optics-ksp-plugin")
