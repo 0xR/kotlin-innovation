@@ -13,12 +13,14 @@ plugins {
 
     // Apply the application plugin to add support for building a CLI application in Java.
     application
+    id("com.google.devtools.ksp") version "1.7.20-1.0.7"
 }
 
 repositories {
     // Use Maven Central for resolving dependencies.
     mavenCentral()
 }
+
 
 dependencies {
     // Align versions of all Kotlin components
@@ -29,6 +31,13 @@ dependencies {
 
     // This dependency is used by the application.
     implementation("com.google.guava:guava:31.0.1-jre")
+
+    implementation(platform("io.arrow-kt:arrow-stack:1.0.1"))
+    implementation("io.arrow-kt:arrow-core")
+    implementation("io.arrow-kt:arrow-optics")
+    implementation("io.arrow-kt:arrow-fx-coroutines")
+    ksp("io.arrow-kt:arrow-optics-ksp-plugin")
+
 }
 
 testing {
