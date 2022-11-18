@@ -1,44 +1,5 @@
----
+# Kotlin FP libs
 
-# try also 'default' to start simple
-theme: seriph
-
-# random image from a curated Unsplash collection by Anthony
-
-# like them? see https://unsplash.com/collections/94734566/slidev
-
-background: https://source.unsplash.com/collection/94734566/1920x1080
-
-# apply any windi css classes to the current slide
-
-class: 'text-center'
-
-# https://sli.dev/custom/highlighters.html
-
-highlighter: shiki
-
-# show line numbers in code blocks
-
-lineNumbers: false
-
-# some information about the slides, markdown enabled
-
-info: |
-
-## Slidev Starter Template
-
-Presentation slides for developers.
-
-Learn more at [Sli.dev](https://sli.dev)
-
-# persist drawings in exports and build
-
-drawings:
-persist: false
-
-# use UnoCSS
-
-css: unocss
 
 ---
 
@@ -73,7 +34,7 @@ fun main() {
 
 # Algebraic Data Types in Kotlin
 
-```koltin {all|3-7|9-11}
+```kotlin {all|1|3-7|9-11}
 sealed interface FileError
 
 @JvmInline
@@ -127,6 +88,8 @@ fun FormField.maxLength(maxLength: Int): ValidatedNel<ValidationError, FormField
 
 ---
 
+# Either - Fail Fast
+
 - either blocks support binding over Validated values with no additional cost or need to convert first to Either
 
 ```kotlin {}
@@ -146,7 +109,8 @@ fun main() {
 
 ---
 
-# Where we get a bit lost
+# Either - Collect all errors
+-  Where we get a bit lost
 
 ```kotlin {all|3|2,4-5|7|8|9}
 fun FormField.validateErrorAccumulate(): ValidatedNel<ValidationError, Email> =
