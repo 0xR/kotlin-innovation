@@ -1,154 +1,172 @@
 ---
+
 # try also 'default' to start simple
 theme: seriph
+
 # random image from a curated Unsplash collection by Anthony
+
 # like them? see https://unsplash.com/collections/94734566/slidev
+
 background: https://source.unsplash.com/collection/94734566/1920x1080
+
 # apply any windi css classes to the current slide
+
 class: 'text-center'
+
 # https://sli.dev/custom/highlighters.html
+
 highlighter: shiki
+
 # show line numbers in code blocks
+
 lineNumbers: false
+
 # some information about the slides, markdown enabled
+
 info: |
-  ## Slidev Starter Template
-  Presentation slides for developers.
 
-  Learn more at [Sli.dev](https://sli.dev)
+## Slidev Starter Template
+
+Presentation slides for developers.
+
+Learn more at [Sli.dev](https://sli.dev)
+
 # persist drawings in exports and build
+
 drawings:
-  persist: false
+persist: false
+
 # use UnoCSS
+
 css: unocss
----
-
-# Welcome to Slidev
-
-Presentation slides for developers
-
-<div class="pt-12">
-  <span @click="$slidev.nav.next" class="px-2 py-1 rounded cursor-pointer" hover="bg-white bg-opacity-10">
-    Press Space for next page <carbon:arrow-right class="inline"/>
-  </span>
-</div>
-
-<div class="abs-br m-6 flex gap-2">
-  <button @click="$slidev.nav.openInEditor()" title="Open in Editor" class="text-xl icon-btn opacity-50 !border-none !hover:text-white">
-    <carbon:edit />
-  </button>
-  <a href="https://github.com/slidevjs/slidev" target="_blank" alt="GitHub"
-    class="text-xl icon-btn opacity-50 !border-none !hover:text-white">
-    <carbon-logo-github />
-  </a>
-</div>
-
-<!--
-The last comment block of each slide will be treated as slide notes. It will be visible and editable in Presenter Mode along with the slide. [Read more in the docs](https://sli.dev/guide/syntax.html#notes)
--->
 
 ---
 
-# What is Slidev?
+# Either
 
-Slidev is a slides maker and presenter designed for developers, consist of the following features
+- We like either
+- Avoids throwing excepitons
 
-- 📝 **Text-based** - focus on the content with Markdown, and then style them later
-- 🎨 **Themable** - theme can be shared and used with npm packages
-- 🧑‍💻 **Developer Friendly** - code highlighting, live coding with autocompletion
-- 🤹 **Interactive** - embedding Vue components to enhance your expressions
-- 🎥 **Recording** - built-in recording and camera view
-- 📤 **Portable** - export into PDF, PNGs, or even a hostable SPA
-- 🛠 **Hackable** - anything possible on a webpage
+```kotlin {all|14-18|all}
+fun parse(s: String): Either<NumberFormatException, Int> =
+  if (s.matches(Regex("-?[0-9]+"))) Either.Right(s.toInt())
+  else Either.Left(NumberFormatException("$s is not a valid integer."))
 
-<br>
-<br>
+fun reciprocal(i: Int): Either<IllegalArgumentException, Double> =
+  if (i == 0) Either.Left(IllegalArgumentException("Cannot take reciprocal of 0."))
+  else Either.Right(1.0 / i)
 
-Read more about [Why Slidev?](https://sli.dev/guide/why)
-
-<!--
-You can have `style` tag in markdown to override the style for the current page.
-Learn more: https://sli.dev/guide/syntax#embedded-styles
--->
-
-<style>
-h1 {
-  background-color: #2B90B6;
-  background-image: linear-gradient(45deg, #4EC5D4 10%, #146b8c 20%);
-  background-size: 100%;
-  -webkit-background-clip: text;
-  -moz-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  -moz-text-fill-color: transparent;
-}
-</style>
-
-<!--
-Here is another comment.
--->
-
----
-
-# Navigation
-
-Hover on the bottom-left corner to see the navigation's controls panel, [learn more](https://sli.dev/guide/navigation.html)
-
-### Keyboard Shortcuts
-
-|     |     |
-| --- | --- |
-| <kbd>right</kbd> / <kbd>space</kbd>| next animation or slide |
-| <kbd>left</kbd>  / <kbd>shift</kbd><kbd>space</kbd> | previous animation or slide |
-| <kbd>up</kbd> | previous slide |
-| <kbd>down</kbd> | next slide |
-
-<!-- https://sli.dev/guide/animations.html#click-animations -->
-<img
-  v-click
-  class="absolute -bottom-9 -left-7 w-80 opacity-50"
-  src="https://sli.dev/assets/arrow-bottom-left.svg"
-/>
-<p v-after class="absolute bottom-23 left-45 opacity-30 transform -rotate-10">Here!</p>
-
----
-layout: image-right
-image: https://source.unsplash.com/collection/94734566/1920x1080
----
-
-# Code
-
-Use code snippets and get the highlighting directly![^1]
-
-```ts {all|2|1-6|9|all}
-interface User {
-  id: number
-  firstName: string
-  lastName: string
-  role: string
-}
-
-function updateUser(id: number, update: User) {
-  const user = getUser(id)
-  const newUser = { ...user, ...update }
-  saveUser(id, newUser)
+fun stringify(d: Double): Either<Nothing, String> = Either.Right(d.toString())
+fun eitherExample(s: String): Either<IllegalArgumentException, String> =
+  parse(s).flatMap(::reciprocal).flatMap(::stringify)
+  
+fun main() {
+  // prints: Either.Left(java.lang.NumberFormatException: blaa! is not a valid integer.)
+  println(eitherExample("blaa!"))
+  
+  // prints: Either.Right(0.3333333333333333)
+  println(eitherExample("3"))
 }
 ```
 
-<arrow v-click="3" x1="400" y1="420" x2="230" y2="330" color="#564" width="3" arrowSize="1" />
+---
 
-[^1]: [Learn More](https://sli.dev/guide/syntax.html#line-highlighting)
+# Algebraic Data Types in Kotlin
 
-<style>
-.footnotes-sep {
-  @apply mt-20 opacity-10;
+```koltin {all|3-7|9-11}
+sealed interface FileError
+
+@JvmInline
+value class SecurityError(val msg: String?) : FileError
+
+@JvmInline
+value class FileNotFound(val path: String) : FileError
+
+object EmptyPath : FileError {
+  override fun toString() = "EmptyPath"
 }
-.footnotes {
-  @apply text-sm opacity-75;
+```
+
+---
+
+# Effects
+
+```kotlin {all|1|8,10|6|2-3}
+fun readFile(path: String?): Effect<FileError, Content> = effect {
+  ensureNotNull(path) { EmptyPath }
+  ensure(path.isNotEmpty()) { EmptyPath }
+  try {
+    val lines = File("${System.getProperty("user.dir")}/$path").readLines()
+    Content(lines)
+  } catch (e: FileNotFoundException) {
+    shift(FileNotFound(path))
+  } catch (e: SecurityException) {
+    shift(SecurityError(e.message))
+  }
 }
-.footnote-backref {
-  display: none;
+```
+
+---
+
+# Validation
+
+```kotlin {all|4,10|6,12}
+// Nel = NonEmptyList
+fun FormField.contains(needle: String): ValidatedNel<ValidationError, FormField> =
+  if (value.contains(needle, false))
+    validNel()
+  else
+    ValidationError.DoesNotContain(needle).invalidNel()
+
+fun FormField.maxLength(maxLength: Int): ValidatedNel<ValidationError, FormField> =
+  if (value.length <= maxLength)
+    validNel()
+  else
+    ValidationError.MaxLength(maxLength).invalidNel()
+```
+
+---
+
+- either blocks support binding over Validated values with no additional cost or need to convert first to Either
+
+```kotlin {}
+fun FormField.validateFailFast(): Either<Nel<ValidationError>, Email> =
+    either.eager {
+      contains("@").bind() // fails fast on first error found
+      maxLength(250).bind()
+      Email(value)
+    }
+    
+fun main() {
+    val fields = listOf(FormField("email", "asdf"));
+    // prints: Either.Left(NonEmptyList(DoesNotContain(value=@)))
+    println(fields.traverse { it.validateFailFast() })
 }
-</style>
+```
+
+---
+
+# Where we get a bit lost
+
+```kotlin {all|3|2,4-5|7|8|9}
+fun FormField.validateErrorAccumulate(): ValidatedNel<ValidationError, Email> =
+  contains("@").zip(
+    Semigroup.nonEmptyList(), // accumulates errors in a non empty list
+    maxLength(200),
+    maxLength(10),
+  ) {
+    _, _, _ -> Email(value) 
+  }.handleErrorWith { 
+    ValidationError.NotAnEmail(it).invalidNel() 
+  }
+
+fun main() {
+  val fields = listOf(FormField("email", "asdf"));
+  fields.traverse(Semigroup.nonEmptyList()) {
+    it.validateErrorAccumulate()
+  }.toEither()
+}
+```
 
 ---
 
@@ -159,10 +177,12 @@ function updateUser(id: number, update: User) {
 
 You can use Vue components directly inside your slides.
 
-We have provided a few built-in components like `<Tweet/>` and `<Youtube/>` that you can use directly. And adding your custom components is also super easy.
+We have provided a few built-in components like `<Tweet/>` and `<Youtube/>` that you can use directly. And adding your
+custom components is also super easy.
 
 ```html
-<Counter :count="10" />
+
+<Counter :count="10"/>
 ```
 
 <!-- ./components/Counter.vue -->
@@ -174,7 +194,8 @@ Check out [the guides](https://sli.dev/builtin/components.html) for more.
 <div>
 
 ```html
-<Tweet id="1390115482657726468" />
+
+<Tweet id="1390115482657726468"/>
 ```
 
 <Tweet id="1390115482657726468" scale="0.65" />
@@ -199,7 +220,8 @@ class: px-20
 
 # Themes
 
-Slidev comes with powerful theming support. Themes can provide styles, layouts, components, or even configurations for tools. Switching between themes by just **one edit** in your frontmatter:
+Slidev comes with powerful theming support. Themes can provide styles, layouts, components, or even configurations for
+tools. Switching between themes by just **one edit** in your frontmatter:
 
 <div grid="~ cols-2 gap-2" m="-t-2">
 
@@ -233,11 +255,12 @@ preload: false
 Animations are powered by [@vueuse/motion](https://motion.vueuse.org/).
 
 ```html
+
 <div
-  v-motion
-  :initial="{ x: -80 }"
-  :enter="{ x: 0 }">
-  Slidev
+        v-motion
+        :initial="{ x: -80 }"
+        :enter="{ x: 0 }">
+    Slidev
 </div>
 ```
 
@@ -315,7 +338,7 @@ $$
 \begin{array}{c}
 
 \nabla \times \vec{\mathbf{B}} -\, \frac1c\, \frac{\partial\vec{\mathbf{E}}}{\partial t} &
-= \frac{4\pi}{c}\vec{\mathbf{j}}    \nabla \cdot \vec{\mathbf{E}} & = 4 \pi \rho \\
+= \frac{4\pi}{c}\vec{\mathbf{j}} \nabla \cdot \vec{\mathbf{E}} & = 4 \pi \rho \\
 
 \nabla \times \vec{\mathbf{E}}\, +\, \frac1c\, \frac{\partial\vec{\mathbf{B}}}{\partial t} & = \vec{\mathbf{0}} \\
 
@@ -400,4 +423,5 @@ class: text-center
 
 # Learn More
 
-[Documentations](https://sli.dev) · [GitHub](https://github.com/slidevjs/slidev) · [Showcases](https://sli.dev/showcases.html)
+[Documentations](https://sli.dev) · [GitHub](https://github.com/slidevjs/slidev)
+· [Showcases](https://sli.dev/showcases.html)
