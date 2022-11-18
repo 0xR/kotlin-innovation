@@ -25,4 +25,9 @@ fun main() {
 
   println("\nEndomorphism Example")
   println(endoExample())
+
+  println("\nAtomic Example")
+  runBlocking {
+    println(atomicExample())
+  }
 }

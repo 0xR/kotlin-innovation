@@ -29,11 +29,12 @@ dependencies {
   // This dependency is used by the application.
   implementation("com.google.guava:guava:31.0.1-jre")
 
-  implementation(platform("io.arrow-kt:arrow-stack:1.0.1"))
-  implementation("io.arrow-kt:arrow-core:1.1.3")
-  implementation("io.arrow-kt:arrow-optics")
-  implementation("io.arrow-kt:arrow-fx-coroutines")
-  implementation("io.kotest:kotest-assertions-core:5.5.4")
+    implementation(platform("io.arrow-kt:arrow-stack:1.0.1"))
+    implementation("io.arrow-kt:arrow-core:1.1.3")
+    implementation("io.arrow-kt:arrow-optics")
+    implementation("io.arrow-kt:arrow-fx-coroutines")
+    implementation("io.arrow-kt:arrow-fx-stm:1.0.1")
+    implementation("io.kotest:kotest-assertions-core:5.5.4")
 //    ksp("io.arrow-kt:arrow-optics-ksp-plugin")
 }
 

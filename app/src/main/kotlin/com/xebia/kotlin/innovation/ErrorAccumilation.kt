@@ -1,3 +1,5 @@
+package com.xebia.kotlin.innovation
+
 import arrow.core.Either
 import arrow.core.Nel
 import arrow.core.ValidatedNel
