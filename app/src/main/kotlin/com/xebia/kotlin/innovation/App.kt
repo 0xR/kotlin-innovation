@@ -6,7 +6,7 @@ package com.xebia.kotlin.innovation
 class App {
     val greeting: String
         get() {
-            return "Hello World!"
+            return "Hello Paul!"
         }
 }
 
