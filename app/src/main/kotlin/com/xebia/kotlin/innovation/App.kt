@@ -16,11 +16,13 @@ fun main() {
   println(optionalFromNullable())
   mappingOptions()
 
-
   println("\nEffects Example")
   runBlocking {
     println(readFile(null).toEither())
     println(readFile("").toEither())
     println(readFile("app/src/main/kotlin/com/xebia/kotlin/innovation/App.kt").toEither())
   }
+
+  println("\nEndomorphism Example")
+  println(endoExample())
 }
